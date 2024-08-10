@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الطلب</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            display: none;
+            margin-top: 20px;
+        }
+        .success-message img {
+            width: 100px;
+            height: 100px;
+        }
+        .success-message p {
+            font-size: 18px;
+            color: #4CAF50;
+        }
+    </style>
+    
+    <!-- رابط مكتبة Email.js -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("k0bcBJE1_9_8f2oTa"); // استخدم user_id الخاص بك
+        })();
+        
+        function submitForm(event) {
+            event.preventDefault();
+            alert("طلبك قيد التنفيذ");
+
+            if (confirm("اضغط OK لتأكيد الطلب")) {
+                document.querySelector('.container').style.display = 'none';
+                document.querySelector('.success-message').style.display = 'block';
+                
+                // جمع البيانات من النموذج
+                var templateParams = {
+                    name: document.getElementById('name').value,
+                    size: document.getElementById('size').value,
+                    color: document.getElementById('color').value,
+                    address: document.getElementById('address').value,
+                    phone: document.getElementById('phone').value,
+                    productNumber: document.getElementById('productNumber').value
+                };
+
+                // إرسال البريد الإلكتروني عبر Email.js
+                emailjs.send('service_01prm9e', 'template_vlrwpaw', templateParams)
+                    .then(function(response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                    }, function(error) {
+                        console.log('FAILED...', error);
+                    });
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>املئ البيانات</h2>
+    <form onsubmit="submitForm(event)">
+        <label for="name">الاسم:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="size">اختر المقاس:</label>
+        <select id="size" name="size" required>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="2XL">2XL</option>
+            <option value="3XL">3XL</option>
+        </select>
+
+        <label for="color">اختر اللون:</label>
+        <select id="color" name="color" required>
+            <option value="white">أبيض</option>
+            <option value="black">أسود</option>
+            <option value="gray">رمادي</option>
+            <option value="red">أحمر</option>
+            <option value="blue">أزرق</option>
+            <option value="green">أخضر</option>
+        </select>
+
+        <label for="address">العنوان:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="phone">رقم الهاتف:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="productNumber">رقم المنتج:</label>
+        <input type="text" id="productNumber" name="productNumber" required>
+
+        <button type="submit">اطلب الآن</button>
+    </form>
+</div>
+
+<div class="success-message">
+    <img src="https://img.icons8.com/color/96/000000/checked--v2.png" alt="علامة صح">
+    <p>شكراً لتعاملكم معنا ( أساطير الموضة ) سيصلك طلبك في غضون ثلاث أيام.</p>
+</div>
+
+</body>
+</html>
